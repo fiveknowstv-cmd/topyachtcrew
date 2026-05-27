@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
 import Link from 'next/link';
@@ -87,22 +88,65 @@ export default function EmployerDashboard() {
           <h3 className="text-2xl font-semibold mb-6">Recent AI-Matched Candidates</h3>
           <div className="space-y-4">
             {[
-              { name: "Elena Voss", position: "Chief Stewardess", match: "94%", status: "New" },
-              { name: "Marcus Hale", position: "Second Engineer", match: "89%", status: "Reviewed" },
-              { name: "Sofia Ramirez", position: "Head of Interior", match: "82%", status: "New" },
+              { 
+                name: "Elena Voss", 
+                position: "Chief Stewardess", 
+                match: "94%", 
+                status: "New",
+                reasons: [
+                  "14 years on 50m+ yachts",
+                  "Strong cultural fit with family owners",
+                  "Fluent in 3 languages matching guest profile",
+                  "Exceptional references from last 2 captains"
+                ]
+              },
+              { 
+                name: "Marcus Hale", 
+                position: "Second Engineer", 
+                match: "89%", 
+                status: "Reviewed",
+                reasons: [
+                  "9 years technical experience",
+                  "High Voltage certified",
+                  "Previous experience on explorer yachts",
+                  "Available for 12-month rotational contract"
+                ]
+              },
+              { 
+                name: "Sofia Ramirez", 
+                position: "Head of Interior", 
+                match: "82%", 
+                status: "New",
+                reasons: [
+                  "11 years leadership experience",
+                  "Silver service & wine trained",
+                  "Excellent team management reviews",
+                  "Prefers busy charter programs"
+                ]
+              },
             ].map((cand, i) => (
-              <div key={i} className="flex justify-between items-center border-b border-[var(--border-subtle)] pb-4 last:border-0 last:pb-0">
+              <motion.div 
+                key={i} 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.05 }}
+                whileHover={{ scale: 1.01 }}
+                className="flex justify-between items-center border-b border-[var(--border-subtle)] pb-4 last:border-0 last:pb-0"
+              >
                 <div>
                   <div className="font-medium">{cand.name}</div>
                   <div className="text-sm text-[var(--text-muted)]">{cand.position}</div>
+                  <div className="text-xs text-[var(--text-muted)] mt-1 line-clamp-1">
+                    {cand.reasons?.[0]}
+                  </div>
                 </div>
                 <div className="text-right">
-                  <div className="text-[var(--gold)] font-semibold">{cand.match}</div>
+                  <div className="text-[var(--gold)] font-semibold text-lg">{cand.match}</div>
                   <Button variant="navy" size="sm" className="mt-1" onClick={() => openReviewModal(cand)}>
                     Review
                   </Button>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
           <Button variant="gold" size="sm" className="mt-6" asChild>
@@ -177,8 +221,15 @@ export default function EmployerDashboard() {
               <div className="text-sm text-[var(--text-muted)]">Match Score</div>
               <div className="text-[var(--gold)] text-2xl font-semibold">{selectedCandidate.match}</div>
             </div>
-            <div className="pt-2 border-t border-[var(--border-subtle)] text-sm text-[var(--text-muted)]">
-              In a real implementation this would show full profile, certificates, video interview link, and AI compatibility breakdown.
+            <div className="pt-2 border-t border-[var(--border-subtle)]">
+              <div className="text-sm font-medium text-[var(--text-muted)] mb-2">AI Match Highlights</div>
+              <ul className="space-y-1.5 text-sm">
+                {selectedCandidate.reasons?.map((reason: string, idx: number) => (
+                  <li key={idx} className="flex gap-2">
+                    <span className="text-[var(--gold)]">•</span> {reason}
+                  </li>
+                ))}
+              </ul>
             </div>
             <div className="flex gap-3 pt-4">
               <Button variant="gold" size="sm">Schedule Interview</Button>

@@ -3,6 +3,8 @@ import { NextResponse } from 'next/server';
 import { updateSession } from '@/lib/supabase/middleware';
 import { createClient } from '@/lib/supabase/server';
 
+export const runtime = 'nodejs';
+
 export async function middleware(request: NextRequest) {
   // TEMPORARY DEMO MODE — Supabase auth disabled for signup/login demo.
   // Remove this bypass once real Supabase integration is re-enabled.

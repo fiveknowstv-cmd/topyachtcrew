@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 
 export default function CrewDashboard() {
   const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
@@ -110,10 +111,10 @@ export default function CrewDashboard() {
                 match: "94%",
                 location: "Mediterranean",
                 matchReasons: [
-                  "12+ years experience on 50m+ yachts",
-                  "Strong cultural fit with owner family (British background)",
-                  "Fluent in French & Italian – matches guest profile",
-                  "Previous Chief on similar vessel size",
+                  "12+ years on 50m+ motor yachts",
+                  "Strong cultural fit with UK-based owners",
+                  "Fluent in French & Italian",
+                  "Wine & silver service specialist",
                 ],
               },
               {
@@ -123,27 +124,34 @@ export default function CrewDashboard() {
                 match: "87%",
                 location: "Caribbean",
                 matchReasons: [
-                  "Excellent service references from current captain",
-                  "High energy and team player – strong cultural alignment",
-                  "Advanced wine & mixology knowledge",
-                  "Available for immediate start in season",
+                  "Excellent references from current captain",
+                  "High-energy team player",
+                  "Advanced mixology & wine knowledge",
+                  "Available for immediate start",
                 ],
               },
               {
                 id: 3,
-                title: "Head of Service",
+                title: "Head of Interior",
                 yacht: "M/Y Lumina 48m",
                 match: "82%",
                 location: "South Pacific",
                 matchReasons: [
-                  "Leadership experience managing teams of 8+",
-                  "Strong preference for rotational schedules",
-                  "Background in fine dining service",
-                  "Good personality match with current HOD team",
+                  "Leadership experience with teams of 8+",
+                  "Prefers rotational schedules",
+                  "Fine dining & guest relations expert",
+                  "Strong personality match with current team",
                 ],
               },
             ].map((job, i) => (
-              <div key={i} className="flex justify-between items-center border-b border-[var(--border-subtle)] pb-4 last:border-0 last:pb-0">
+              <motion.div 
+                key={i} 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.05 }}
+                whileHover={{ scale: 1.01 }}
+                className="flex justify-between items-center border-b border-[var(--border-subtle)] pb-4 last:border-0 last:pb-0"
+              >
                 <div>
                   <div className="font-medium">{job.title}</div>
                   <div className="text-sm text-[var(--text-muted)]">{job.yacht} • {job.location}</div>
@@ -162,7 +170,7 @@ export default function CrewDashboard() {
                     </Button>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
           <Button variant="navy" size="sm" className="mt-6" asChild>
