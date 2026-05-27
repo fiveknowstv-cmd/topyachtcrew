@@ -3,29 +3,31 @@ import { NextResponse } from 'next/server';
 import { updateSession } from '@/lib/supabase/middleware';
 import { createClient } from '@/lib/supabase/server';
 
-// Force Node.js runtime for compatibility with Supabase SSR on Vercel.
-// proxy.ts (the Next.js 16+ replacement for the deprecated middleware.ts) defaults to Node.js.
+// Force Node.js runtime + dynamic rendering for Supabase SSR compatibility on Vercel.
+// This completely disables Edge runtime for the proxy (the Next.js 16+ replacement for middleware).
 export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 export async function proxy(request: NextRequest) {
-  // TEMPORARY DEMO MODE — Supabase auth disabled for signup/login demo.
-  // Remove this bypass once real Supabase integration is re-enabled.
+  // DEMO_MODE bypass — keeps everything simple while developing.
+  // When disabled, the code below runs fully on Node.js (no Edge modules).
   const DEMO_MODE = true;
   if (DEMO_MODE) {
     return NextResponse.next();
   }
 
+  // Essential session handling + auth redirects (role-based protection)
   const response = await updateSession(request);
 
   const pathname = request.nextUrl.pathname;
 
-  // Skip auth checks for public routes and static assets
+  // Public routes and static assets
   const publicPaths = ['/login', '/signup', '/forgot-password', '/', '/crew', '/employers'];
   if (publicPaths.some(p => pathname.startsWith(p)) || pathname.includes('.')) {
     return response;
   }
 
-  // Check for dashboard routes that require authentication + role
+  // Protected dashboard + profile routes — role enforcement
   if (pathname.startsWith('/dashboard') || pathname.startsWith('/profile')) {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
@@ -36,7 +38,6 @@ export async function proxy(request: NextRequest) {
       return NextResponse.redirect(url);
     }
 
-    // Fetch profile to get role
     const { data: profile } = await supabase
       .from('profiles')
       .select('role')
@@ -45,11 +46,9 @@ export async function proxy(request: NextRequest) {
 
     const role = profile?.role;
 
-    // Role-based protection
     if (pathname.startsWith('/dashboard/crew') && role !== 'crew') {
       return NextResponse.redirect(new URL('/dashboard/employer', request.url));
     }
-
     if (pathname.startsWith('/dashboard/employer') && role !== 'employer') {
       return NextResponse.redirect(new URL('/dashboard/crew', request.url));
     }
