@@ -1,26 +1,163 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Premium Dark Superyacht Palette - Lighter, brighter & elegant */
+  --navy: #0E2240;
+  --navy-dark: #0F2847;
+  --navy-elevated: #1A3559;
+  --gold: #C5A26F;
+  --gold-light: #D4B78F;
+  --gold-dim: #A88A5A;
+  --cream: #F5F1E9;
+  --text: #F8F4ED;
+  --text-muted: #9AB0CC;
+  --charcoal: #1F2937;
+  --border-subtle: rgba(255, 255, 255, 0.1);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-playfair);
+
+  --radius: 0.5rem;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background: var(--navy-dark);
+  --color-foreground: var(--text);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Professional Dark Luxury Styling */
+body {
+  font-family: var(--font-geist-sans);
+  color: var(--text);
+  background: var(--navy-dark);
+}
+
+/* Display / Headline font */
+.font-display {
+  font-family: var(--font-playfair);
+  font-feature-settings: "tnum", "lnum";
+}
+
+/* Luxury Buttons (gold pops beautifully on dark) */
+.btn-gold {
+  background: linear-gradient(135deg, var(--gold) 0%, #B38A52 100%);
+  color: var(--navy-dark);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.btn-gold:hover {
+  background: linear-gradient(135deg, #D4B78F 0%, #C5A26F 100%);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.25), 0 10px 10px -5px rgb(0 0 0 / 0.25);
+  border-color: var(--gold-light);
+}
+
+.btn-navy {
+  background: var(--navy-elevated);
+  color: var(--text);
+  border: 1px solid var(--border-subtle);
+  transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.btn-navy:hover {
+  background: var(--navy);
+  border-color: var(--gold);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.2);
+}
+
+/* Premium Cards on dark */
+.card {
+  background: var(--navy-elevated);
+  border: 1px solid var(--border-subtle);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), 
+              box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.4);
+  border-color: var(--gold);
+}
+
+/* Section headings */
+.section-heading {
+  font-family: var(--font-playfair);
+  letter-spacing: -0.025em;
+  color: var(--cream);
+}
+
+/* Gold accent underline */
+.gold-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.gold-underline:after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 60%;
+  height: 2px;
+  background: linear-gradient(to right, var(--gold), var(--gold-light));
+}
+
+/* Form inputs - dark luxury */
+.input-luxury {
+  background: var(--navy-elevated);
+  border: 1px solid var(--border-subtle);
+  color: var(--text);
+  transition: all 0.15s ease;
+}
+
+.input-luxury:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(197, 162, 111, 0.15);
+  outline: none;
+}
+
+.input-luxury::placeholder {
+  color: var(--text-muted);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Subtle maritime elements */
+.divider-gold {
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+}
+
+/* Navbar specific dark overrides */
+.nav-dark {
+  background: rgba(10, 20, 40, 0.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+/* Responsive typography */
+@media (max-width: 640px) {
+  .section-heading {
+    font-size: 2.25rem !important;
+    line-height: 1.05 !important;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Additional premium touches */
+.text-gold {
+  color: var(--gold);
+}
+
+.border-gold {
+  border-color: var(--gold);
 }
