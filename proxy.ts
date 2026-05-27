@@ -3,9 +3,11 @@ import { NextResponse } from 'next/server';
 import { updateSession } from '@/lib/supabase/middleware';
 import { createClient } from '@/lib/supabase/server';
 
+// Force Node.js runtime for compatibility with Supabase SSR on Vercel.
+// proxy.ts (the Next.js 16+ replacement for the deprecated middleware.ts) defaults to Node.js.
 export const runtime = 'nodejs';
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   // TEMPORARY DEMO MODE — Supabase auth disabled for signup/login demo.
   // Remove this bypass once real Supabase integration is re-enabled.
   const DEMO_MODE = true;
